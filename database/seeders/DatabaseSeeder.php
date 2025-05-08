@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlanetSeeder::class);
         $this->call(ObstacleSeeder::class);
+        $this->call(RoverSeeder::class);
     }
 }

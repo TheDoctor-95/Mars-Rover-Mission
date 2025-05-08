@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
-            $table->string("comand_executed");
-            $table->string("comand_remaning");
+            $table->string("command_executed");
             $table->string("status");
 
             $table->integer("x"); //posicion inicial
             $table->integer("y"); //posicion inicial
             $table->string("direction");
-            
+
+
+             $table->unsignedBigInteger('planet_id')->nullable();
+            $table->foreign('planet_id')->references('id')->on('planets');
+
+             $table->unsignedBigInteger('rover_id')->nullable();
+            $table->foreign('rover_id')->references('id')->on('rovers');
+
             $table->timestamps();
         });
     }

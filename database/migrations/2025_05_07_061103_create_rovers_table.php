@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->integer("x_initial"); //posicion inicial
             $table->integer("y_initial"); //posicion inicial
-            $table->string("direction");
+            $table->string("direction_initial"); //DIRECTION INICIAL
 
              $table->unsignedBigInteger('planet_id')->nullable();
             $table->foreign('planet_id')->references('id')->on('planets');

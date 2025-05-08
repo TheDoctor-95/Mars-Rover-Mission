@@ -1,3 +1,4 @@
+import axios from 'axios';
 //import Vue from 'vue'
 
 const actions = {
@@ -6,9 +7,8 @@ const actions = {
         state,
     }, planet_id) {
         try {
-            //return await Vue.http.get('obstacles').then(response => {
-            //    return response.json()
-            //})
+            return await axios.get(`${import.meta.env.VITE_APP_API_URL}planet/${planet_id}/rover`).then(response => response.data)
+
             console.log(planet_id)
         } catch (e) {
             console.log(e)

@@ -16,7 +16,7 @@ export default {
         ...mapActions("obstacles", ["getAllObstacles"]),
         loadAllObstacles() {
             this.getAllObstacles(1).then(response => {
-                this.obstacles = response.data;
+                this.obstacles = response;
             });
         }
     },

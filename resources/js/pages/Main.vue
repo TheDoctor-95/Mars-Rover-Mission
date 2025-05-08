@@ -1,17 +1,50 @@
-<script setup lang="ts">
-import { Planet, Rover } from '@/types/rover';
-import PlanetComponent from "@/components/Planet.vue"
-import SendMovement from '@/components/SendMovement.vue';
-import Movements from '@/components/Movements.vue';
-import { defineComponent } from 'vue';
-import { ref } from 'vue';
+<script setup>
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+    import PlanetComponent from"@/components/Planet.vue";
+    import SendMovement from'@/components/SendMovement.vue';
+    import Movements from '@/components/Movements.vue';
+</script>
+<script>
+    import { defineComponent } from 'vue';
+    import { ref } from 'vue';
+    import { mapActions } from "vuex";
 
-var planet = ref(new Planet(75, 75));
-var rover = ref(new Rover(38, 38, "N"));
+
+
+    export default defineComponent({
+        mounted() {
+            this.fetchPlanet();
+        },
+        data() {
+            return {
+                planet: null,
+                rover: null
+            }
+        },
+        methods: {
+            ...mapActions("planets", ["getPlanet"]),
+            fetchPlanet() {
+                this.getPlanet().then(response => {
+                    console.log(response);
+                    this.planet = response;
+                    this.fetchRover(response.id);
+                })
+            },
+
+            ...mapActions("rovers", ["getRover"]),
+            fetchRover(planet_id) {
+                this.getRover(planet_id).then(response => {
+                    console.log(response);
+                    this.rover = response;
+                })
+            },
+            update() {
+                this.fetchPlanet();
+                this.$refs.movements.fetchMovements();
+            }
+        },
+    })
+
 
 </script>
 
@@ -25,14 +58,14 @@ var rover = ref(new Rover(38, 38, "N"));
     <div class=" min-h-screen flex flex-row bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center">
 
             <div class="pr-9">
-                <PlanetComponent :planet="planet" :rover="rover"/>
+                <PlanetComponent v-if="planet && rover" :planet="planet" :rover="rover"/>
             </div>
             <div class="flex-1 flex flex-col">
 
-                <SendMovement />
+                <SendMovement v-if="planet && rover" :planet="planet" :rover="rover" @update="update"/>
                 <div>
                     Moviments
-                    <Movements />
+                    <Movements v-if="planet && rover" :planet="planet" :rover="rover" ref="movements"/>
                 </div>
             </div>
     </div>

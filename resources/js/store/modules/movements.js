@@ -1,15 +1,27 @@
+import axios from 'axios';
 //import Vue from 'vue'
 
 const actions = {
     getMovements: async function ({
         commit,
         state,
-    }, planet_id) {
+    }, { planet_id, rover_id }) {
         try {
-            //return await Vue.http.get('obstacles').then(response => {
-            //    return response.json()
-            //})
-            console.log(planet_id)
+            return await axios.get(`${import.meta.env.VITE_APP_API_URL}planet/${planet_id}/rover/${rover_id}/movement`).then(response => response.data)
+
+        } catch (e) {
+            console.log(e)
+        } finally {
+
+        }
+    },
+    sendCommand: async function ({
+        commit,
+        state,
+    }, { planet_id, rover_id, command }) {
+        try {
+            return await axios.post(`${import.meta.env.VITE_APP_API_URL}planet/${planet_id}/rover/${rover_id}/movement`, { command }).then(response => response.data)
+
         } catch (e) {
             console.log(e)
         } finally {
